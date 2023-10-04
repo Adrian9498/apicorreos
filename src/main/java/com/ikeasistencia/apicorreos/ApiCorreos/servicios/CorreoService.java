@@ -152,6 +152,30 @@ public class CorreoService {
         
     }
 
+    public void informacionEncuestador(String url,String email,String template) throws Exception{
+
+        String destinatarioFinal = "Encuestador IKE" + "<prueba@encuestador.com>" ;
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
+
+        String contenido;
+        try {
+
+            contenido = contenidoEncuestador(url,template);
+            helper.setSubject("Recuperacion de contraseña");
+            helper.setTo(email);
+            helper.setCc("ualonso@ikeasistencia.com");
+            helper.setBcc("rrios@ikeasistencia.com");
+            helper.setFrom(destinatarioFinal);
+            helper.setText(contenido,true);
+            javaMailSender.send(mimeMessage);
+            
+        } catch (Exception e) {
+            throw e;
+        }
+        
+    }
+
     public void correoMindef(String body,String template) throws Exception{
         Gson json = new Gson();
         JsonObject datosCorreo = json.fromJson(body, JsonObject.class);
@@ -392,6 +416,20 @@ public class CorreoService {
         model.put("message", datos.getMessage());
         model.put("telephoneVar", datos.getTelephoneVar());
         model.put("emailVar", datos.getEmailVar());
+        try {
+            configuration.getTemplate(template).process(model,stringWriter);
+        } catch (Exception e) {
+            
+        }
+        return stringWriter.getBuffer().toString();
+    }
+
+    public String contenidoEncuestador(String url,String template) throws Exception{
+        StringWriter stringWriter = new StringWriter();
+        Map<String,Object> model = new HashMap<>();
+       
+        model.put("linkVar", url);
+       
         try {
             configuration.getTemplate(template).process(model,stringWriter);
         } catch (Exception e) {

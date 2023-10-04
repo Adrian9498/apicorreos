@@ -2,6 +2,7 @@ package com.ikeasistencia.apicorreos.ApiCorreos.controladores;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.ikeasistencia.apicorreos.ApiCorreos.DTO.Encuestador;
 import com.ikeasistencia.apicorreos.ApiCorreos.DTO.PwaContent;
 import com.ikeasistencia.apicorreos.ApiCorreos.Entity.Plantillas;
 import com.ikeasistencia.apicorreos.ApiCorreos.repository.PlantillasRepositorio;
@@ -248,6 +250,30 @@ public class CorreoController {
         try {
             
             correoService.informacionPWA(content, template);
+            response.put("Status", "Ok");
+            response.put("Mensaje", "Correo Enviado con exito");
+        } catch (Exception e) {
+            System.out.println(e);
+            response.put("Status", "Error");
+            response.put("Mensaje", "Datos erroneos, verifica tus datos. No se envio el correo");
+        }
+        
+       
+        return response;
+    }
+
+    @PostMapping("/correo/encuestador")
+    public Map<String, String> correoPWA(@RequestBody Encuestador encuestador) throws Exception {
+       
+        HashMap<String,String> response = new HashMap<>();
+
+        Plantillas opcion = repositorio.findById(Long.valueOf(14));
+
+        String template = opcion.getNombreTemplate();
+                
+        try {
+            
+            correoService.informacionEncuestador(encuestador.getUrl(),encuestador.getEmail(), template);
             response.put("Status", "Ok");
             response.put("Mensaje", "Correo Enviado con exito");
         } catch (Exception e) {

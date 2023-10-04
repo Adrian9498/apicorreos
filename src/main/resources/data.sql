@@ -12,3 +12,4 @@ INSERT INTO TEMPLATES Values (10,'compensarfree.ftlh','resumen compensar free');
 INSERT INTO TEMPLATES Values (11,'atlas.ftlh','Correo informativo Atlas');
 INSERT INTO TEMPLATES Values (12,'compensarwelcomeplanfamilias.ftlh','Welcome kits Compensar familias');
 INSERT INTO TEMPLATES Values (13,'contactoPWA.ftlh','Welcome kits Compensar familias');
+INSERT INTO TEMPLATES Values (14,'correoEncuestador.ftlh','Correo para el API de Encuestador');
